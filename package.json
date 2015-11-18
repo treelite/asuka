@@ -1,0 +1,15 @@
+{
+  "name": "asuka",
+  "version": "0.1.0",
+  "description": "",
+  "bin": {
+    "asuka": "./bin/asuka"
+  },
+  "author": "treelite",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "winston": "^2.1.0",
+    "winston-daily-rotate-file": "^1.0.1"
+  }
+}
