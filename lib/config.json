@@ -1,7 +1,0 @@
-{
-    "port": 8777,
-    "log": "/var/log/asuka",
-    "sites": [
-        "registry.npmjs.org"
-    ]
-}
