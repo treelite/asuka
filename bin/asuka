@@ -1,7 +1,4 @@
-/**
- * @file CLI
- * @author treelite(c.xinle@gmail.com)
- */
+#! /usr/bin/env node
 
 'use strict';
 
@@ -10,7 +7,7 @@ let info = require('../package.json');
 
 program
     .version(info.version)
-    .command('start [config_file]', 'start proxy server')
-    .command('restart [config_file]', 'restart proxy server')
+    .command('start', 'start proxy server')
+    .command('restart', 'restart proxy server')
     .command('stop', 'stop proxy server')
     .parse(process.argv);
