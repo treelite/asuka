@@ -5,13 +5,14 @@
 
 'use strict';
 
-const DEFAULT_LOG_PATH = '/usr/log/asuka';
-
+let os = require('os');
 let path = require('path');
 let logger = require('../lib/logger');
 let program = require('commander');
 let Proxy = require('../lib/Proxy');
 let extend = require('../lib/util/extend');
+
+const DEFAULT_LOG_PATH = path.resolve(os.homedir(), 'log', 'asuka');
 
 program
     .option('-p, --port', 'port')
@@ -32,7 +33,7 @@ if (program.config) {
 }
 let proxy = new Proxy(options);
 
-log.info('asuka start');
+log.info('asuka start', options);
 
 proxy.on('access', (e) => log.info('access', e));
 proxy.on('block', (e) => log.warn('block', e));
