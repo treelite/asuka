@@ -8,9 +8,9 @@
 let program = require('commander');
 
 program
-    .option('-p, --port', 'port')
-    .option('-l, --log', 'log path')
-    .option('-c, --config', 'config file')
+    .option('-p, --port [port]', 'port')
+    .option('-l, --log [path]', 'log path')
+    .option('-c, --config [file]', 'config file')
     .parse(process.argv);
 
 let fs = require('fs');

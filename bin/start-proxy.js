@@ -15,9 +15,9 @@ let extend = require('../lib/util/extend');
 const DEFAULT_LOG_PATH = path.resolve(os.homedir(), 'log', 'asuka');
 
 program
-    .option('-p, --port', 'port')
-    .option('-l, --log', 'log path')
-    .option('-c, --config', 'config file')
+    .option('-p, --port [port]', 'port')
+    .option('-l, --log [path]', 'log path')
+    .option('-c, --config [file]', 'config file')
     .parse(process.argv);
 
 let log = logger(program.log || DEFAULT_LOG_PATH);
