@@ -17,15 +17,16 @@ let fs = require('fs');
 let path = require('path');
 let fork = require('child_process').fork;
 let exists = require('../lib/util/exists');
-let pidFile = path.resolve(__dirname, 'pid');
+let infoFile = path.resolve(__dirname, 'pinfo');
 
-if (exists(pidFile)) {
+if (exists(infoFile)) {
     console.error('asuka is running');
-    return;
+    process.exit(1);
 }
 
-let child = fork(path.resolve(__dirname, 'start-proxy'), process.argv.slice(2));
-fs.writeFileSync(pidFile, child.pid);
+let args = process.argv.slice(2);
+let child = fork(path.resolve(__dirname, 'start-proxy'), args);
+fs.writeFileSync(infoFile, JSON.stringify({pid: child.pid, args: args, cwd: process.cwd()}));
 child.disconnect();
 
 console.log('asuka start');
