@@ -1,6 +1,6 @@
 {
   "name": "asuka",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "index",
   "description": "mini HTTPS proxy",
   "keywords": [
