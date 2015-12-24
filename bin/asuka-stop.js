@@ -6,21 +6,17 @@
 'use strict';
 
 let fs = require('fs');
-let path = require('path');
-let exists = require('../lib/util/exists');
-let infoFile = path.resolve(__dirname, 'pinfo');
+let pm = require('../lib/util/pm');
 
+let info = pm.get();
 
-if (!exists(infoFile)) {
+if (!info) {
     console.error('asuka not run');
     process.exit(1);
 }
 
-let info = JSON.parse(fs.readFileSync(infoFile, 'utf8'));
-
 try {
-    process.kill(parseInt(info.pid, 10), 'SIGKILL');
-    fs.unlinkSync(infoFile);
+    process.kill(info.pid, 'SIGKILL');
     console.log('asuka stop');
 }
 catch (e) {

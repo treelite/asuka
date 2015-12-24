@@ -5,21 +5,18 @@
 
 'use strict';
 
-let fs = require('fs');
 let path = require('path');
-let fork = require('child_process').fork;
-let exists = require('../lib/util/exists');
-let infoFile = path.resolve(__dirname, 'pinfo');
+let pm = require('../lib/util/pm');
 
-if (!exists(infoFile)) {
+let info = pm.get();
+
+if (!info) {
     console.error('asuka not run');
     process.exit(1);
 }
 
-let info = JSON.parse(fs.readFileSync(infoFile, 'utf8'));
-
 try {
-    process.kill(parseInt(info.pid, 10), 'SIGKILL');
+    process.kill(info.pid, 'SIGKILL');
     console.log('asuka stop');
 }
 catch (e) {
@@ -27,16 +24,7 @@ catch (e) {
     process.exit(1);
 }
 
-let child = fork(
-    path.resolve(__dirname, 'start-proxy'),
-    info.args,
-    {
-        cwd: info.cwd
-    }
-);
-info.pid = child.pid;
-fs.writeFileSync(infoFile, JSON.stringify(info));
-child.disconnect();
+pm.fork(path.resolve(__dirname, 'start-proxy'), info.args, info.cwd);
 
 console.log('asuka start');
 process.exit(0);
