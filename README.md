@@ -8,23 +8,52 @@ mini HTTPS proxy
 
 ```sh
 $ npm install -g asuka
-$ asuka
 
-  Usage: asuka [options] [command]
+# 启动服务器
+$ asuka start
 
+# 停止服务器
+$ asuka stop
+```
 
-  Commands:
+## Command
 
-    start       start proxy server
-    restart     restart proxy server
-    stop        stop proxy server
-    help [cmd]  display help for [cmd]
+### start
+
+启动服务器
+
+```sh
+Usage: asuka-start [options]
 
   Options:
 
-    -h, --help     output usage information
-    -V, --version  output the version number
+    -h, --help           output usage information
+    -p, --port [port]    port
+    -l, --log [path]     log path
+    -c, --config [file]  config file
 ```
+
+配置文件为 `JSON` 文件，可包含以下信息：
+
+* **port** `{number}` 服务器的端口号
+* **log** `{string}` 日志路径
+* **hosts** `{Array.<string>}` 允许访问的站点列表，如果为空则不限制访问的站点
+
+```js
+{
+    "port": 8848,
+    "log": "/var/log/asuka",
+    "hosts": ["registry.npmjs.org"]
+}
+```
+
+### stop
+
+停止服务器
+
+### restart
+
+重启服务器
 
 ## API
 
@@ -34,15 +63,18 @@ $ asuka
 
 * **options** `{Object=}` 配置信息
     * **port** `{Number=}` 代理服务器端口，默认为 8777
-    * **hosts** `{Array.<string>=}` 允许访问的站点列表，如果为空则不限制访问站点
+    * **hosts** `{Array.<string>=}` 允许访问的站点列表，如果为空则不限制访问的站点
 
 ```js
-let Proxy = require('asuka');
+import Proxy from 'asuka';
+
 // 设置端口在 8787 并且只能访问 github.com
 let proxy = new Proxy({port: 8787, hosts: ['github.com']});
 ```
 
-### access
+### Events
+
+#### access
 
 代理请求访问事件
 
@@ -50,7 +82,7 @@ let proxy = new Proxy({port: 8787, hosts: ['github.com']});
     * **host** `{string}` 访问站点
     * **client** `{string}` 客户端 IP
 
-### block
+#### block
 
 代理请求屏蔽事件
 
