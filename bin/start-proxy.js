@@ -20,19 +20,20 @@ program
     .option('-c, --config [file]', 'config file')
     .parse(process.argv);
 
-let log = logger(program.log || DEFAULT_LOG_PATH);
-
-let options = {};
-if (program.port) {
-    options.port = program.port;
-}
+let options = {
+    port: program.port
+};
 if (program.config) {
-    let config = path.resolve(process.cwd(), program.config);
-    config = require(config);
+    let file = path.resolve(process.cwd(), program.config);
+    let config = require(file);
+    if (config.log) {
+        config.log = path.resolve(path.dirname(file), config.log);
+    }
     options = extend(config, options);
 }
 let proxy = new Proxy(options);
 
+let log = logger(program.log || options.log || DEFAULT_LOG_PATH);
 log.info('asuka start', options);
 
 proxy.on('access', (e) => log.info('access', e));
