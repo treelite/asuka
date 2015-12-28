@@ -14,27 +14,40 @@ let extend = require('../lib/util/extend');
 
 const DEFAULT_LOG_PATH = path.resolve(os.homedir(), 'log', 'asuka');
 
-program
-    .option('-p, --port [port]', 'port')
-    .option('-l, --log [path]', 'log path')
-    .option('-c, --config [file]', 'config file')
-    .parse(process.argv);
+/**
+ * 启动代理服务器
+ *
+ * @param {Object=} options 配置参数
+ * @param {number=} options.port 服务器端口号
+ * @param {string=} options.log 日志目录
+ * @param {string=} options.config 配置文件
+ */
+function start(options) {
+    options = options || {};
 
-let options = {
-    port: program.port
-};
-if (program.config) {
-    let file = path.resolve(process.cwd(), program.config);
-    let config = require(file);
-    if (config.log) {
-        config.log = path.resolve(path.dirname(file), config.log);
+    if (options.config) {
+        let file = path.resolve(process.cwd(), options.config);
+        let config = require(file);
+        if (config.log) {
+            config.log = path.resolve(path.dirname(file), config.log);
+        }
+        options = extend(config, options);
     }
-    options = extend(config, options);
+
+    let proxy = new Proxy(options);
+
+    let log = logger(options.log || DEFAULT_LOG_PATH);
+    log.info('asuka start', options);
+
+    proxy.on('access', (e) => log.info('access', e));
+    proxy.on('block', (e) => log.warn('block', e));
 }
-let proxy = new Proxy(options);
 
-let log = logger(program.log || options.log || DEFAULT_LOG_PATH);
-log.info('asuka start', options);
+// 如果做为启动脚本运行
+// 则从运行参数中获取参数启动 server
+if (process.argv[1] + '.js' === __filename) {
+    let options = JSON.parse(process.argv[2]);
+    start(options);
+}
 
-proxy.on('access', (e) => log.info('access', e));
-proxy.on('block', (e) => log.warn('block', e));
+module.exports = start;
