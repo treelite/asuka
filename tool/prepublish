@@ -1,0 +1,23 @@
+#! /bin/bash
+
+# In order to only run prepublish before `npm publish`, we have to check argv.
+if node -e "process.exit(($npm_config_argv).original[0].indexOf('pu') === 0)"; then
+  exit 0;
+fi
+
+# Ensure contains correct file strcuture
+# Only Travis CI can publish to NPM
+if [ "$CI" != true ]; then
+  echo "Only Travis CI can publish to NPM";
+  exit 1;
+fi;
+
+DIR="output"
+
+# Compile first
+npm run compile
+
+# Copy files
+cp -r $DIR/lib ./
+cp -r $DIR/bin ./
+cp $DIR/*.js ./

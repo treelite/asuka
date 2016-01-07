@@ -5,12 +5,12 @@
 
 'use strict';
 
-let os = require('os');
-let path = require('path');
-let logger = require('../lib/logger');
-let program = require('commander');
-let Proxy = require('../lib/Proxy');
-let extend = require('../lib/util/extend');
+import os from 'os';
+import path from 'path';
+import logger from '../lib/logger';
+import program from 'commander';
+import Proxy from '../lib/Proxy';
+import extend from '../lib/util/extend';
 
 const DEFAULT_LOG_PATH = path.resolve(os.homedir(), 'log', 'asuka');
 
@@ -22,9 +22,7 @@ const DEFAULT_LOG_PATH = path.resolve(os.homedir(), 'log', 'asuka');
  * @param {string=} options.log 日志目录
  * @param {string=} options.config 配置文件
  */
-function start(options) {
-    options = options || {};
-
+function start(options = {}) {
     if (options.config) {
         let file = path.resolve(process.cwd(), options.config);
         let config = require(file);
@@ -50,4 +48,4 @@ if (process.argv[1] + '.js' === __filename) {
     start(options);
 }
 
-module.exports = start;
+export default start;
