@@ -47,7 +47,7 @@ describe('Proxy', () => {
         options.agent = new HttpsProxyAgent(PROXY_URL);
 
         https.get(options, res => {
-            expect(res.statusCode).toEqual(200);
+            expect(res.statusCode >= 200 && res.statusCode < 400).toBeTruthy;
             expect(accessEmitted).toBeTruthy();
             expect(blockEmitted).toBeFalsy();
             done();
@@ -106,7 +106,7 @@ describe('Proxy', () => {
             options = url.parse('https://www.taobao.com');
             options.agent = new HttpsProxyAgent(PROXY_URL);
             https.get(options, res => {
-                expect(res.statusCode).toEqual(200);
+                expect(res.statusCode >= 200 && res.statusCode < 400).toBeTruthy;
                 expect(accessEmitted).toBeTruthy();
                 done();
             });
@@ -141,14 +141,14 @@ describe('Proxy', () => {
             options = url.parse('https://www.taobao.com');
             options.agent = new HttpsProxyAgent(PROXY_URL);
             https.get(options, res => {
-                expect(res.statusCode).toEqual(200);
+                expect(res.statusCode >= 200 && res.statusCode < 400).toBeTruthy;
                 expect(accessEmitted).toEqual(1);
                 expect(blockEmitted).toEqual(1);
 
                 options = url.parse('https://style.taobao.com');
                 options.agent = new HttpsProxyAgent(PROXY_URL);
                 https.get(options, res => {
-                    expect(res.statusCode).toEqual(200);
+                    expect(res.statusCode >= 200 && res.statusCode < 400).toBeTruthy;
                     expect(accessEmitted).toEqual(2);
                     expect(blockEmitted).toEqual(1);
                     done();
