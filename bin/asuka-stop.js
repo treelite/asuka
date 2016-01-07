@@ -5,8 +5,8 @@
 
 'use strict';
 
-let fs = require('fs');
-let pm = require('../lib/util/pm');
+import fs from 'fs';
+import * as pm from '../lib/util/pm';
 
 let info = pm.get();
 

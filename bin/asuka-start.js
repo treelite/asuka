@@ -5,8 +5,9 @@
 
 'use strict';
 
-let program = require('commander');
-let pm = require('../lib/util/pm');
+import program from 'commander';
+import start from './start-proxy';
+import * as pm from '../lib/util/pm';
 
 program
     .option('-p, --port [port]', 'port')
@@ -25,7 +26,6 @@ let cpy = key => program[key] && (options[key] = program[key]);
 ['port', 'log', 'config'].forEach(cpy);
 
 if (program.foreground) {
-    let start = require('./start-proxy');
     start(options);
     console.log('asuka start');
 }

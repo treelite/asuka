@@ -16,6 +16,8 @@ $ asuka start
 $ asuka stop
 ```
 
+服务器默认使用 `8777` 端口并将日志保存在 `$HOME/log/asuka` 文件夹下
+
 ## Command
 
 ### start
@@ -63,7 +65,7 @@ Usage: asuka-start [options]
 
 * **options** `{Object=}` 配置信息
     * **port** `{Number=}` 代理服务器端口，默认为 8777
-    * **hosts** `{Array.<string>=}` 允许访问的站点列表，如果为空则不限制访问的站点
+    * **hosts** `{Array.<string>=}` 允许访问的站点列表（向下包含子域名），如果不设置则不限制访问的站点
 
 ```js
 import Proxy from 'asuka';
@@ -71,6 +73,12 @@ import Proxy from 'asuka';
 // 设置端口在 8787 并且只能访问 github.com
 let proxy = new Proxy({port: 8787, hosts: ['github.com']});
 ```
+
+### Methods
+
+#### close()
+
+关闭服务器
 
 ### Events
 

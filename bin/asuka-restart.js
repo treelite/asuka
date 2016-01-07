@@ -5,8 +5,8 @@
 
 'use strict';
 
-let path = require('path');
-let pm = require('../lib/util/pm');
+import path from 'path';
+import * as pm from '../lib/util/pm';
 
 let info = pm.get();
 
