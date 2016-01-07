@@ -14,6 +14,7 @@
   "scripts": {
     "prepublish": "./tool/prepublish",
     "pretest": "npm run compile",
+    "test": "jasmine JASMINE_CONFIG_PATH=test/jasmine.json",
     "compile": "./tool/compile"
   },
   "license": "MIT",
@@ -22,11 +23,14 @@
     "url": "https://github.com/treelite/asuka.git"
   },
   "dependencies": {
-    "babel-cli": "^6.4.0",
-    "babel-preset-es2015-node5": "^1.1.1",
     "commander": "^2.9.0",
     "mkdirp": "^0.5.1",
     "winston": "^2.1.0",
     "winston-daily-rotate-file": "^1.0.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.4.0",
+    "babel-preset-es2015-node5": "^1.1.1",
+    "jasmine": "^2.4.1"
   }
 }
