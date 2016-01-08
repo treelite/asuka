@@ -30,6 +30,21 @@ function start(options = {}) {
             config.log = path.resolve(path.dirname(file), config.log);
         }
         options = extend(config, options);
+
+        fs.watch(file, (e, filename) => {
+            if (e !== 'change') {
+                return;
+            }
+
+            fs.readFile(filename, 'utf8',  (error, data) => {
+                if (error) {
+                    return
+                }
+                data = JSON.parse(data);
+                proxy.reload(data);
+                log.info('reload config', {data});
+            });
+        });
     }
 
     let proxy = new Proxy(options);
