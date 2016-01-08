@@ -127,7 +127,7 @@ describe('Proxy', () => {
         proxy.on('access', e => {
             expect(e.host.indexOf('taobao.com') >= 0).toBeTruthy();
             expect(e.client.indexOf('127.0.0.1') >= 0).toBeTruthy();
-            accessEmitted++
+            accessEmitted++;
         });
 
         let options = url.parse('https://www.baidu.com');
@@ -153,6 +153,39 @@ describe('Proxy', () => {
                     expect(blockEmitted).toEqual(1);
                     done();
                 });
+            });
+        });
+    });
+
+    it('reload config', done => {
+        let accessEmitted = false;
+        let blockEmitted = false;
+        proxy = new Proxy({port: PORT, hosts: []});
+
+        proxy.on('block', e => {
+            expect(e.host).toEqual('www.taobao.com');
+            expect(e.client.indexOf('127.0.0.1') >= 0).toBeTruthy();
+            blockEmitted = true;
+        });
+
+        proxy.on('access', () => accessEmitted = true);
+
+        let options = url.parse('https://www.taobao.com');
+        options.agent = new HttpsProxyAgent(PROXY_URL);
+
+        https.get(options, res => {
+            expect(res.statusCode).toEqual(403);
+            expect(accessEmitted).toBeFalsy();
+            expect(blockEmitted).toBeTruthy();
+
+            proxy.reload({hosts: ['www.taobao.com']});
+            options = url.parse('https://www.taobao.com');
+            options.agent = new HttpsProxyAgent(PROXY_URL);
+            https.get(options, res => {
+                expect(res.statusCode >= 200 && res.statusCode < 400).toBeTruthy;
+                expect(accessEmitted).toBeTruthy();
+                expect(blockEmitted).toBeTruthy();
+                done();
             });
         });
     });
