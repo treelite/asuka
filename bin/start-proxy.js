@@ -6,9 +6,9 @@
 'use strict';
 
 import os from 'os';
+import fs from 'fs';
 import path from 'path';
 import logger from '../lib/logger';
-import program from 'commander';
 import Proxy from '../lib/Proxy';
 import extend from '../lib/util/extend';
 
@@ -23,6 +23,9 @@ const DEFAULT_LOG_PATH = path.resolve(os.homedir(), 'log', 'asuka');
  * @param {string=} options.config 配置文件
  */
 function start(options = {}) {
+    let proxy;
+    let log;
+
     if (options.config) {
         let file = path.resolve(process.cwd(), options.config);
         let config = require(file);
@@ -38,7 +41,7 @@ function start(options = {}) {
 
             fs.readFile(filename, 'utf8',  (error, data) => {
                 if (error) {
-                    return
+                    return;
                 }
                 data = JSON.parse(data);
                 proxy.reload(data);
@@ -47,9 +50,9 @@ function start(options = {}) {
         });
     }
 
-    let proxy = new Proxy(options);
+    proxy = new Proxy(options);
 
-    let log = logger(options.log || DEFAULT_LOG_PATH);
+    log = logger(options.log || DEFAULT_LOG_PATH);
     log.info('asuka start', options);
 
     proxy.on('access', (e) => log.info('access', e));

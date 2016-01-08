@@ -5,7 +5,6 @@
 
 'use strict';
 
-import fs from 'fs';
 import * as pm from '../lib/util/pm';
 
 let info = pm.get();
