@@ -80,6 +80,13 @@ let proxy = new Proxy({port: 8787, hosts: ['github.com']});
 
 关闭服务器
 
+#### reload(options)
+
+重新加载配置信息
+
+* **options** `{Object=}` 配置信息
+    * **hosts** `{Array.<string>=}` 允许访问的站点列表
+
 ### Events
 
 #### access
